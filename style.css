@@ -1,0 +1,583 @@
+/* ======================================================================
+   LumaGrain — CEP panel styles
+   Blue accent theme · 320x520 dockable panel
+   ---------------------------------------------------------------------
+   Design language:
+     - near-black stage with a faint top vignette for depth
+     - navy cards with hairline borders; active cards glow blue
+     - gradient accent (accent -> accent-hover) on interactive elements
+     - value readouts as pill chips; status uses colored dot markers
+     - card deck scrolls; header / Apply / status stay pinned
+   ====================================================================== */
+
+:root {
+    --bg:             #0d0d0d;
+    --bg-section:     #1a1a2e;
+    --bg-section-hi:  #1e1e36;
+    --accent:         #2979ff;
+    --accent-hover:   #5393ff;
+    --text:           #e0e0e0;
+    --text-muted:     #888888;
+    --toggle-on:      #2979ff;
+    --toggle-off:     #333333;
+    --slider-fill:    #2979ff;
+    --slider-rest:    #2e2e3a;
+    --error:          #ff4d4d;
+    --ok:             #4dc3ff;
+    --good:           #6fdc8c;
+    --hairline:       rgba(255, 255, 255, 0.06);
+    --divider:        #20202e;
+    --radius:         10px;
+    --font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --ease-pop:       cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background:
+        radial-gradient(140% 60% at 50% -10%, #151530 0%, rgba(21, 21, 48, 0) 60%),
+        var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 12px 8px 12px;
+}
+
+/* ================= Header ================= */
+
+#header {
+    position: relative;
+    padding: 16px 2px 12px 2px;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+/* thin gradient keyline under the header */
+#header::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        rgba(41, 121, 255, 0) 0%,
+        rgba(41, 121, 255, 0.55) 50%,
+        rgba(41, 121, 255, 0) 100%);
+}
+
+#title {
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffffff 0%, #c9d9ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px rgba(41, 121, 255, 0.45));
+}
+
+#title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+}
+
+.version-chip {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--accent-hover);
+    background: rgba(41, 121, 255, 0.12);
+    border: 1px solid rgba(41, 121, 255, 0.35);
+    border-radius: 999px;
+    padding: 1px 7px 2px 7px;
+    vertical-align: 2px;
+}
+
+#subtitle {
+    margin-top: 4px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ================= Card deck (scrollable) ================= */
+
+#cards {
+    flex: 1 1 auto;
+    min-height: 0;          /* enables the scroll inside flex column */
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 -4px;
+    padding: 2px 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #2b2b45 transparent;
+}
+
+#cards::-webkit-scrollbar {
+    width: 6px;
+}
+
+#cards::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#cards::-webkit-scrollbar-thumb {
+    background: #26263c;
+    border-radius: 3px;
+}
+
+#cards::-webkit-scrollbar-thumb:hover {
+    background: #34345a;
+}
+
+/* ================= Effect cards ================= */
+
+.effect-card {
+    position: relative;
+    background: linear-gradient(180deg, var(--bg-section-hi) 0%, #17172a 100%);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    margin-top: 10px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.30);
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.effect-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* armed card: blue hairline + soft outer glow + inner top highlight */
+.effect-card.on {
+    border-color: rgba(41, 121, 255, 0.50);
+    box-shadow:
+        0 0 0 1px rgba(41, 121, 255, 0.22),
+        0 6px 20px rgba(16, 42, 100, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* left accent spine on armed cards */
+.effect-card.on::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+    box-shadow: 0 0 8px rgba(41, 121, 255, 0.8);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 12px;
+    cursor: pointer;
+    outline: none;
+    transition: background 200ms ease;
+}
+
+.card-header:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.card-header:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(41, 121, 255, 0.65);
+    border-radius: var(--radius);
+}
+
+.effect-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    pointer-events: none; /* clicks fall through to the card header */
+    transition: color 200ms ease;
+}
+
+/* status dot before each effect name */
+.effect-name::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3a3a52;
+    box-shadow: none;
+    transition: background 200ms ease, box-shadow 200ms ease;
+    flex: 0 0 auto;
+}
+
+.effect-card.on .effect-name {
+    color: #dbe7ff;
+}
+
+.effect-card.on .effect-name::before {
+    background: var(--accent);
+    box-shadow: 0 0 7px rgba(41, 121, 255, 0.9);
+}
+
+/* card note (small descriptive line under the header) */
+.card-note {
+    padding: 0 12px 9px 27px;
+    margin-top: -5px;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.85;
+}
+
+/* ================= Card body (sliding panel) ================= */
+
+.card-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 12px;
+    transition: max-height 200ms ease, opacity 200ms ease, padding 200ms ease;
+}
+
+.effect-card.expanded .card-body {
+    max-height: 200px;
+    opacity: 1;
+    padding-bottom: 13px;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0%,
+        var(--divider) 20%,
+        var(--divider) 80%,
+        rgba(255, 255, 255, 0) 100%);
+    margin: 2px 0;
+}
+
+/* ================= Toggle switch ================= */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 21px;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-knob {
+    position: absolute;
+    inset: 0;
+    background: var(--toggle-off);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 21px;
+    transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.slider-knob::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background: #9c9cab;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    transition: transform 200ms var(--ease-pop), background 200ms ease;
+}
+
+.switch input:checked + .slider-knob {
+    background: linear-gradient(135deg, var(--toggle-on), var(--accent-hover));
+    border-color: rgba(120, 170, 255, 0.55);
+    box-shadow: 0 0 10px rgba(41, 121, 255, 0.55);
+}
+
+.switch input:checked + .slider-knob::before {
+    transform: translateX(17px);
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 10, 40, 0.45);
+}
+
+.switch input:focus-visible + .slider-knob {
+    box-shadow: 0 0 0 2px rgba(41, 121, 255, 0.45);
+}
+
+/* ================= Parameter rows ================= */
+
+.param-row {
+    display: flex;
+    align-items: center;
+    margin-top: 11px;
+    transition: opacity 200ms ease;
+}
+
+.param-row:first-child {
+    margin-top: 3px;
+}
+
+.param-row.disabled {
+    opacity: 0.32;
+}
+
+.param-label {
+    width: 58px;
+    flex: 0 0 auto;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.param-value {
+    width: 34px;
+    flex: 0 0 auto;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #cfe0ff;
+    background: rgba(41, 121, 255, 0.10);
+    border: 1px solid rgba(41, 121, 255, 0.28);
+    border-radius: 999px;
+    padding: 2px 0 3px 0;
+    margin-left: 6px;
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.param-row.disabled .param-value {
+    color: #6d6d7d;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ================= Range slider ================= */
+
+.param-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 5px;
+    margin: 0 8px;
+    border-radius: 3px;
+    outline: none;
+    background: linear-gradient(to right,
+                var(--slider-fill) 0%,
+                var(--accent-hover) var(--fill, 50%),
+                var(--slider-rest) var(--fill, 50%),
+                var(--slider-rest) 100%);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+    transition: opacity 200ms ease;
+}
+
+.param-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 8px rgba(41, 121, 255, 0.8),
+                0 1px 3px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 200ms ease;
+}
+
+.param-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.12);
+    box-shadow: 0 0 12px rgba(83, 147, 255, 0.95),
+                0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.param-slider:active::-webkit-slider-thumb {
+    transform: scale(1.2);
+}
+
+.param-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(41, 121, 255, 0.35),
+                0 0 10px rgba(41, 121, 255, 0.8);
+}
+
+.param-slider:disabled::-webkit-slider-thumb {
+    box-shadow: none;
+    border-color: #4a4a58;
+    background: #6d6d7d;
+    cursor: default;
+    transform: none;
+}
+
+.param-slider:disabled {
+    --fill: 0%;
+}
+
+/* ================= Apply button ================= */
+
+#apply-btn {
+    position: relative;
+    margin-top: 14px;
+    padding: 13px 0;
+    width: 100%;
+    border: 1px solid rgba(130, 175, 255, 0.35);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-shadow: 0 1px 2px rgba(10, 30, 90, 0.4);
+    cursor: pointer;
+    flex: 0 0 auto;
+    box-shadow:
+        0 4px 14px rgba(41, 121, 255, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transition: box-shadow 200ms ease, transform 120ms ease, filter 200ms ease;
+}
+
+#apply-btn:hover {
+    filter: brightness(1.08);
+    box-shadow:
+        0 0 18px rgba(41, 121, 255, 0.65),
+        0 0 40px rgba(41, 121, 255, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+#apply-btn:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow: 0 2px 8px rgba(41, 121, 255, 0.35);
+}
+
+#apply-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(41, 121, 255, 0.4),
+                0 4px 14px rgba(41, 121, 255, 0.30);
+}
+
+#apply-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+    filter: none;
+}
+
+/* ================= Status bar ================= */
+
+#status-bar {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--divider);
+    flex: 0 0 auto;
+    min-height: 36px;
+    max-height: 96px;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: #2b2b45 transparent;
+}
+
+#status-bar::-webkit-scrollbar {
+    width: 5px;
+}
+
+#status-bar::-webkit-scrollbar-thumb {
+    background: #26263c;
+    border-radius: 3px;
+}
+
+#status-text {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+#status-text.error {
+    color: var(--error);
+}
+
+#status-text.ok {
+    color: var(--ok);
+}
+
+/* colored status segments with dot markers */
+#status-text .s-ok {
+    color: var(--good);
+}
+
+#status-text .s-removed {
+    color: #9a9aa8;
+}
+
+#status-text .s-fail {
+    color: var(--error);
+}
+
+#status-text .s-note {
+    color: var(--text-muted);
+}
+
+#status-text .s-ok::before,
+#status-text .s-removed::before,
+#status-text .s-fail::before {
+    content: "● ";
+    font-size: 8px;
+    vertical-align: 1px;
+}
+
+#status-text .s-note::before {
+    content: "— ";
+}
+
+/* segments are separated by the wrapper's join space; tighten it */
+#status-text span {
+    margin-right: 2px;
+}
+
+/* ================= Motion preferences ================= */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

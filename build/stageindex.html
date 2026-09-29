@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CinemaFX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="wrapper">
+
+        <!-- ================= Header ================= -->
+        <header id="header">
+            <h1 id="title">CinemaFX</h1>
+            <div id="subtitle">Cinematic Look Suite &mdash; GPU</div>
+        </header>
+
+        <!-- ================= Film Grain card ================= -->
+        <section class="effect-card" id="card-grain">
+            <div class="card-header" id="grain-header" tabindex="0">
+                <span class="effect-name">Film Grain</span>
+                <label class="switch" title="Enable Film Grain">
+                    <input type="checkbox" id="grain-toggle">
+                    <span class="slider-knob"></span>
+                </label>
+            </div>
+            <div class="card-body">
+                <div class="param-row">
+                    <span class="param-label">Intensity</span>
+                    <input type="range" class="param-slider" id="grain-intensity"
+                           min="0" max="100" step="1" value="50" disabled>
+                    <span class="param-value" id="grain-intensity-value">50</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Size</span>
+                    <input type="range" class="param-slider" id="grain-size"
+                           min="0" max="100" step="1" value="50" disabled>
+                    <span class="param-value" id="grain-size-value">50</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Opacity</span>
+                    <input type="range" class="param-slider" id="grain-opacity"
+                           min="0" max="100" step="1" value="60" disabled>
+                    <span class="param-value" id="grain-opacity-value">60</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ================= Bloom card ================= -->
+        <section class="effect-card" id="card-bloom">
+            <div class="card-header" id="bloom-header" tabindex="0">
+                <span class="effect-name">Bloom</span>
+                <label class="switch" title="Enable Bloom">
+                    <input type="checkbox" id="bloom-toggle">
+                    <span class="slider-knob"></span>
+                </label>
+            </div>
+            <div class="card-body">
+                <div class="param-row">
+                    <span class="param-label">Intensity</span>
+                    <input type="range" class="param-slider" id="bloom-intensity"
+                           min="0" max="100" step="1" value="55" disabled>
+                    <span class="param-value" id="bloom-intensity-value">55</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Size</span>
+                    <input type="range" class="param-slider" id="bloom-size"
+                           min="0" max="100" step="1" value="45" disabled>
+                    <span class="param-value" id="bloom-size-value">45</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Opacity</span>
+                    <input type="range" class="param-slider" id="bloom-opacity"
+                           min="0" max="100" step="1" value="50" disabled>
+                    <span class="param-value" id="bloom-opacity-value">50</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ================= Halation card ================= -->
+        <section class="effect-card" id="card-halation">
+            <div class="card-header" id="halation-header" tabindex="0">
+                <span class="effect-name">Halation</span>
+                <label class="switch" title="Enable Halation">
+                    <input type="checkbox" id="halation-toggle">
+                    <span class="slider-knob"></span>
+                </label>
+            </div>
+            <div class="card-body">
+                <div class="param-row">
+                    <span class="param-label">Intensity</span>
+                    <input type="range" class="param-slider" id="halation-intensity"
+                           min="0" max="100" step="1" value="50" disabled>
+                    <span class="param-value" id="halation-intensity-value">50</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Size</span>
+                    <input type="range" class="param-slider" id="halation-size"
+                           min="0" max="100" step="1" value="50" disabled>
+                    <span class="param-value" id="halation-size-value">50</span>
+                </div>
+                <div class="param-row">
+                    <span class="param-label">Opacity</span>
+                    <input type="range" class="param-slider" id="halation-opacity"
+                           min="0" max="100" step="1" value="55" disabled>
+                    <span class="param-value" id="halation-opacity-value">55</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= Apply button ================= -->
+        <button id="apply-btn" title="Apply enabled effects to selected clips">Apply Effects</button>
+
+        <!-- ================= Status bar ================= -->
+        <footer id="status-bar">
+            <span id="status-text">Ready. Select clips in the timeline, then apply.</span>
+        </footer>
+
+    </div>
+
+    <script src="lib/CSInterface.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

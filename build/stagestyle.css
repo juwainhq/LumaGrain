@@ -1,0 +1,313 @@
+/* ======================================================================
+   CinemaFX — CEP panel styles
+   Blue accent theme, 320x520 dockable panel
+   ====================================================================== */
+
+:root {
+    --bg:             #0d0d0d;
+    --bg-section:     #1a1a2e;
+    --accent:         #2979ff;
+    --accent-hover:   #5393ff;
+    --text:           #e0e0e0;
+    --text-muted:     #888888;
+    --toggle-on:      #2979ff;
+    --toggle-off:     #333333;
+    --slider-fill:    #2979ff;
+    --slider-rest:    #333333;
+    --error:          #ff4d4d;
+    --ok:             #4dc3ff;
+    --divider:        #222230;
+    --font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 12px 8px 12px;
+}
+
+/* ================= Header ================= */
+
+#header {
+    padding: 14px 2px 10px 2px;
+    text-align: center;
+    border-bottom: 1px solid var(--divider);
+    flex: 0 0 auto;
+}
+
+#title {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text);
+    text-shadow: 0 0 10px rgba(41, 121, 255, 0.65),
+                 0 0 22px rgba(41, 121, 255, 0.35);
+}
+
+#subtitle {
+    margin-top: 3px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ================= Effect cards ================= */
+
+.effect-card {
+    background: var(--bg-section);
+    border: 1px solid #23233a;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    transition: border-color 200ms ease;
+}
+
+.effect-card.on {
+    border-color: rgba(41, 121, 255, 0.55);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    cursor: pointer;
+    outline: none;
+}
+
+.card-header:focus-visible .effect-name {
+    color: var(--accent-hover);
+}
+
+.effect-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    pointer-events: none; /* clicks fall through to the card header */
+    transition: color 200ms ease;
+}
+
+.effect-card.on .effect-name {
+    color: #cfe1ff;
+}
+
+/* Sliding body with smooth 200ms expand/collapse */
+.card-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 12px;
+    transition: max-height 200ms ease, opacity 200ms ease, padding 200ms ease;
+}
+
+.effect-card.expanded .card-body {
+    max-height: 180px;
+    opacity: 1;
+    padding-bottom: 12px;
+}
+
+.divider {
+    height: 1px;
+    background: var(--divider);
+    margin: 2px 0;
+}
+
+/* ================= Toggle switch ================= */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    flex: 0 0 auto;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-knob {
+    position: absolute;
+    inset: 0;
+    background: var(--toggle-off);
+    border-radius: 20px;
+    transition: background 200ms ease;
+}
+
+.slider-knob::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: #a0a0a0;
+    transition: transform 200ms ease, background 200ms ease;
+}
+
+.switch input:checked + .slider-knob {
+    background: var(--toggle-on);
+}
+
+.switch input:checked + .slider-knob::before {
+    transform: translateX(16px);
+    background: #ffffff;
+}
+
+/* ================= Parameter rows ================= */
+
+.param-row {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    transition: opacity 200ms ease;
+}
+
+.param-row.disabled {
+    opacity: 0.35;
+}
+
+.param-label {
+    width: 56px;
+    flex: 0 0 auto;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.param-value {
+    width: 30px;
+    flex: 0 0 auto;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+    color: var(--text);
+}
+
+/* ================= Range slider ================= */
+
+.param-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 4px;
+    margin: 0 8px;
+    border-radius: 2px;
+    outline: none;
+    background: linear-gradient(to right,
+                var(--slider-fill) 0%,
+                var(--slider-fill) var(--fill, 50%),
+                var(--slider-rest) var(--fill, 50%),
+                var(--slider-rest) 100%);
+    transition: opacity 200ms ease;
+}
+
+.param-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 6px rgba(41, 121, 255, 0.7);
+    cursor: pointer;
+}
+
+.param-slider:disabled::-webkit-slider-thumb {
+    box-shadow: none;
+    border-color: #555555;
+    background: #777777;
+    cursor: default;
+}
+
+.param-slider:disabled {
+    --fill: 0%;
+}
+
+/* ================= Apply button ================= */
+
+#apply-btn {
+    margin-top: 16px;
+    padding: 12px 0;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: background 200ms ease, box-shadow 200ms ease, transform 100ms ease;
+}
+
+#apply-btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 16px rgba(41, 121, 255, 0.65),
+                0 0 34px rgba(41, 121, 255, 0.30);
+}
+
+#apply-btn:active {
+    transform: scale(0.985);
+}
+
+#apply-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    box-shadow: none;
+}
+
+/* ================= Status bar ================= */
+
+#status-bar {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--divider);
+    flex: 1 1 auto;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+}
+
+#status-text {
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+#status-text.error {
+    color: var(--error);
+}
+
+#status-text.ok {
+    color: var(--ok);
+}
